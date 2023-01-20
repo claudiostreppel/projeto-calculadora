@@ -12,9 +12,9 @@ class CalcController {
         this._displayCalcEl = document.querySelector("#display")
         this._dateEl = document.querySelector("#data")
         this._timeEl = document.querySelector("#hora")
-        this._currentDate 
+        this._currentDate
         this.initialize()
-        this.teste = 0
+        this.initButtonsEvents()
 
     }
 
@@ -22,16 +22,50 @@ class CalcController {
 
     initialize() {
 
-       
-       this.setDisplayDateTime()
-        
+
+        this.setDisplayDateTime()
+
         setInterval(() => {
 
-          this.setDisplayDateTime()
-                     
+            this.setDisplayDateTime()
+
+
+
+        }, 1000)
+    }
+
+    addEventListenerAll(element, events, fn) {
+
+        events.split(' ').forEach(event => {
+
+            element.addEventListener(event, fn, false)
+        })
+    }
+
+
+    initButtonsEvents() {
+        /* O queryselector pega o primeiro elemento que atender os parametros. O query selectorAll pega todos os elementos que atenderem os parametros */
+
+        let buttons = document.querySelectorAll("#buttons > g, #parts > g")
+
+
+
+        /* a variavel buttons recebe uma lista de elementos. O forEach vai varrer essa lista cada vez que houver um click*/
+
+        buttons.forEach((btn, index) => {
+            this.addEventListenerAll(btn, 'click drag ', e => {
+                console.log(btn.className.baseVal.replace("btn-", ""))
+            })
+
+            this.addEventListenerAll(btn, "mouseover mouseup mousedown",  e => {
             
-           
-        }, 1000 )
+                btn.style.cursor = "pointer"
+                
+            })
+
+            
+
+        })
     }
 
     // Coloca a data e hora dentro de um elemento
@@ -39,8 +73,8 @@ class CalcController {
         this.displayDate = this.currentDate.toLocaleDateString(this._locale)
         this.displayTime = this.currentDate.toLocaleTimeString(this._locale)
     }
-    
-    
+
+
 
     get displayTime() {
 
@@ -85,5 +119,5 @@ class CalcController {
 
         this._currentDate = date
     }
-    
+
 }
